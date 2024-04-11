@@ -18,7 +18,7 @@ import numpy as np
 #10% hyperparameter of number of rules to hold in top 
 #See first if we can init these rules, then worry about scoring them and making new populations 
 class population:
-    def __init__(self, default_parameter_dict, consequent_dict, feature_dict, key, df):
+    def __init__(self, default_parameter_dict, consequent_dict, feature_dict, df):
         #Passes parameters
         #Magic number for now 
         self.round_num = 2
@@ -26,7 +26,7 @@ class population:
         self.df_columns = self.get_df_columns(df)
         self.default_parameter_dict = default_parameter_dict.copy()
         self.consequent_dict = consequent_dict.copy()
-        self.key = key 
+        self.key = self.consequent_dict.get("name", None)
         for item in list(feature_dict.keys()):
             if item not in list(self.df_columns):
                 feature_dict.pop(item) 
@@ -81,7 +81,8 @@ class population:
         param_name = consequent_dict['name']
         lower_bound = consequent_dict['lower_bound']
         upper_bound = consequent_dict['upper_bound']
-        query = f'{param_name} >= {lower_bound} & {param_name} <= {upper_bound}'
+        #Change also here! 
+        query = f'`{param_name}` >= {lower_bound} & `{param_name}` <= {upper_bound}'
 
         if isinstance(df, list):
             num_consequent = 0
@@ -340,7 +341,7 @@ class population:
         for rule in self.top_rules:
             list_of_rules.append(rule.get_rule_dict_all_numeric())
         rule_save = json.dumps(list_of_rules, indent=4)
-        start_string = f"generated_files/{name}/"
+        start_string = f"data/output_data/{name}/"
         if not os.path.exists(start_string):
             os.makedirs(start_string)
         save_string = f"{start_string}top_rules.json"
@@ -353,7 +354,7 @@ class population:
         for rule in self.rules_pop:
             list_of_rules.append(rule.get_rule_dict_all_numeric())
         rule_save = json.dumps(list_of_rules, indent=4)
-        start_string = f"generated_files/{name}/"
+        start_string = f"data/output_data/{name}/"
         if not os.path.exists(start_string):
             os.makedirs(start_string)
         save_string = f"{start_string}all_rules.json"

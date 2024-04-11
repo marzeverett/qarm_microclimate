@@ -26,7 +26,7 @@ class parameter:
         if feature_dict["sequence"] == True:
             self.sequence = True
             self.sequence_limit = feature_dict["sequence_limit"]
-            self.sequence_offest = feature_dict.get("sequence_offest", False)
+            self.sequence_offset = feature_dict.get("sequence_offset", False)
         else:
             self.sequence = False 
         
@@ -46,8 +46,8 @@ class parameter:
     
     def random_sequence(self):
         start_int = 0
-        if self.sequence_offest:
-            start_int = self.sequence_offest
+        if self.sequence_offset:
+            start_int = self.sequence_offset
         bound_1 = random.randint(start_int, start_int+self.sequence_limit)
         bound_2 = random.randint(start_int, start_int+self.sequence_limit)
         if bound_1 > bound_2:
@@ -178,9 +178,6 @@ class parameter:
     
     def mutate_sequence(self):
         #Mutate 1-2 days at a time, only. 
-        # start_int = 0
-        # if self.sequence_offest:
-        #     start_int = self.sequence_offset 
         tries = 0
         success = 0
         old_curr_seq_upper = self.curr_sequence_upper

@@ -142,7 +142,9 @@ class rule:
     def build_param_specific_query(self, param_name):
         parameter = self.rule_dict[param_name]
         lower, upper = parameter.return_bounds()
-        query = f'{param_name} >= {lower} & {param_name} <= {upper}'
+        #CHANGE IS HERE
+        #query = f'{param_name} >= {lower} & {param_name} <= {upper}'
+        query = f'`{param_name}` >= {lower} & `{param_name}` <= {upper}'
         return query  
 
     def get_indexes(self, param_name, df):
@@ -356,6 +358,10 @@ class rule:
                         earliest, latest, earliest_param_name = self.get_rule_sequence_bounds_and_earliest_param()
                         #Gives a penalty if the function looking too far back at the beginning. 
                         self.fitness = self.fitness -(1*(0.5*s_penalty) + (0.8*(latest/self.sequence_limit)))
+                    if self.sequence_penalty_index == 4:
+                        earliest, latest, earliest_param_name = self.get_rule_sequence_bounds_and_earliest_param()
+                        #Gives a penalty if the function looking too far back at the beginning. 
+                        self.fitness = self.fitness -(1*(0.1*s_penalty) + (0.8*(latest/self.sequence_limit)))
 
 
     def run_range_penalty(self):
@@ -384,6 +390,8 @@ class rule:
             self.fitness = (5*self.support+0.5*self.confidence+0.1*self.lift)
         if index == 6:
             self.fitness = (2*self.support*2*self.confidence*5*(1-self.lift))
+        if index == 7:
+            self.fitness = (8*self.support + 5*self.confidence + 1*(1-self.lift))
 
         self.run_sequence_penalty()
         self.run_range_penalty()

@@ -48,7 +48,8 @@ def build_param_specific_query(param_name, rule):
     parameters_dict = rule["parameters"]
     lower = parameters_dict[param_name]["lower_bound"]
     upper = parameters_dict[param_name]["upper_bound"]
-    query_string = f'{param_name} >= {lower} & {param_name} <= {upper}'
+    #Change also here!
+    query_string = f'`{param_name}` >= {lower} & `{param_name}` <= {upper}'
     return query_string
 
 
@@ -97,7 +98,8 @@ def build_rule_prediction_query(rule):
         upper = parameters_dict[param]["upper_bound"]
         if not first:
             query_string = query_string + ' & '
-        query_string = query_string + f'{param} >= {lower} & {param} <= {upper}'
+        #Change also here!!! 
+        query_string = query_string + f'`{param}` >= {lower} & `{param}` <= {upper}'
         #print(query_string)
         first = 0
     return query_string

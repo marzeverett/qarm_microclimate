@@ -206,7 +206,6 @@ class parameter:
                     #Change is here!
                     self.curr_sequence_upper = old_curr_seq_upper
                     self.curr_sequence_lower = old_curr_seq_lower
-
             if self.sequence_offset:
                 #If we went below our offset - bad. 
                 if lower_bound < self.sequence_offset or lower_bound < 0:

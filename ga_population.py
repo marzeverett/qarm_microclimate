@@ -148,7 +148,7 @@ class population:
 
     def calc_parameters(self, feature_dict, default_parameter_dict, df, key):
         #For each 
-        defaults_list = ["name", "mutation_amount", "range_restriction", "range_penalty", "max_mutation_tries", "sequence", "sequence_limit", "sequence_penalty"]
+        defaults_list = ["name", "mutation_amount", "range_restriction", "range_penalty", "max_mutation_tries", "sequence", "sequence_limit", "sequence_penalty", "sequence_offset"]
         for item in list(feature_dict.keys()):
             feature = feature_dict[item]
             #Load in defaults that aren't already present 

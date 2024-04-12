@@ -101,7 +101,11 @@ class rule:
         self.active_parameters = []
         #One rule
         #Pick a number of parameters
-        num = random.uniform(0, self.init_max_params)
+        #num = random.uniform(0, self.init_max_params)
+        #This is where we should maybe change - MARKED CHANGE HERE - eventually paramterize 
+
+        num = random.uniform(1, self.init_max_params)
+
         working_list = self.parameter_list.copy()
         round_num = math.ceil(num)
         if round_num == 0:
@@ -391,7 +395,17 @@ class rule:
         if index == 6:
             self.fitness = (2*self.support*2*self.confidence*5*(1-self.lift))
         if index == 7:
-            self.fitness = (8*self.support + 5*self.confidence + 1*(1-self.lift))
+            self.fitness = (8*self.support + 5*self.confidence*1*(1-self.lift))
+        if index == 8:
+            self.fitness = (self.support + self.confidence*1*(1-self.lift))
+        if index == 9:
+            self.fitness = (2*self.support + self.confidence*1*(1-self.lift))
+        if index == 10:
+            self.fitness = (2*self.support+(self.num_whole_rule/self.num_consequent)+ 3*self.confidence*1*(1-self.lift))
+        if index == 11:
+            self.fitness = (2*self.support+(self.num_whole_rule/self.num_consequent)+ 8*self.confidence*1*(1-self.lift))
+        if index == 12:
+            self.fitness = (1*self.support+5*(self.num_whole_rule/self.num_consequent)+ 5*self.confidence + 0.1*self.lift)
 
         self.run_sequence_penalty()
         self.run_range_penalty()

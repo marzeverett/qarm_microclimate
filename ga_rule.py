@@ -406,6 +406,8 @@ class rule:
             self.fitness = (2*self.support+(self.num_whole_rule/self.num_consequent)+ 8*self.confidence*1*(1-self.lift))
         if index == 12:
             self.fitness = (1*self.support+5*(self.num_whole_rule/self.num_consequent)+ 5*self.confidence + 0.1*self.lift)
+        if index == 13:
+            self.fitness = (1*self.support+3*(self.num_whole_rule/self.num_consequent)+ 5*self.confidence)
 
         self.run_sequence_penalty()
         self.run_range_penalty()

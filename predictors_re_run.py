@@ -30,7 +30,7 @@ def run_lgwf_predictor(name, param_dict):
 
 
 
-experiment_list_file_name = "just_testing"
+experiment_list_file_name = "experiments_list"
 
 experiments_list = importlib.import_module(f"experiment_parameters.{experiment_list_file_name}", package=None)
 

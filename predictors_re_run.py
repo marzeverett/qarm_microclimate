@@ -3,7 +3,7 @@ import json
 import data.input_data.lgwf_specific_data as lgwf
 import qarm_genetic_algorithm 
 #lists
-import experiments_list 
+import importlib 
 
 def run_lgwf_experiment(name, param_dict):
     #Get the feature_dict, consequent dict, and df's
@@ -27,10 +27,18 @@ def run_lgwf_predictor(name, param_dict):
     #Run the experiment
     qarm_genetic_algorithm.run_just_predictor(name, param_dict, consequent_dict, feature_dict, train_df, test_df)
 
+
+
+
+experiment_list_file_name = "just_testing"
+
+experiments_list = importlib.import_module(f"experiment_parameters.{experiment_list_file_name}", package=None)
+
 #Run all the experiments in the file 
 for experiment_name, experiment_parameters in experiments_list.experiments.items():
-    run_lgwf_experiment(experiment_name, experiment_parameters)
-
-#Run just the predictor for the experiments in the file 
-for experiment_name, experiment_parameters in experiments_list.experiments.items():
     run_lgwf_predictor(experiment_name, experiment_parameters)
+
+# #Run just the predictor for the experiments in the file 
+# for experiment_name, experiment_parameters in experiments_list.experiments.items():
+#     run_lgwf_predictor(experiment_name, experiment_parameters)
+

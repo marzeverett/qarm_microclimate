@@ -65,6 +65,9 @@ print(unusable_cols)
 print("USABLE COLS")
 print(usable_cols)
 
+print(train_df.head())
+print(test_df.head())
+
 # # Drop these columns from the dataframe
 # df.drop(empty_cols,
 #         axis=1,

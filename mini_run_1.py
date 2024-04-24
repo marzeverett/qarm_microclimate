@@ -30,13 +30,15 @@ def run_lgwf_predictor(name, param_dict):
 
 
 
-experiment_list_file_name = "amalgation"
-#experiment_list_file_name = "experiments_list"
+experiment_list_file_name = "mini_run_1"
 
 experiments_list = importlib.import_module(f"experiment_parameters.{experiment_list_file_name}", package=None)
 
-#Run all the experiments in the file through prediction
+#Run all the experiments in the file 
 for experiment_name, experiment_parameters in experiments_list.experiments.items():
-    run_lgwf_predictor(experiment_name, experiment_parameters)
+    run_lgwf_experiment(experiment_name, experiment_parameters)
 
+# #Run just the predictor for the experiments in the file 
+# for experiment_name, experiment_parameters in experiments_list.experiments.items():
+#     run_lgwf_predictor(experiment_name, experiment_parameters)
 

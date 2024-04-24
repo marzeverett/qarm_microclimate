@@ -408,6 +408,18 @@ class rule:
             self.fitness = (1*self.support+5*(self.num_whole_rule/self.num_consequent)+ 5*self.confidence + 0.1*self.lift)
         if index == 13:
             self.fitness = (1*self.support+3*(self.num_whole_rule/self.num_consequent)+ 5*self.confidence)
+        if index == 14:
+            maximum = max(self.support, self.confidence, self.lift)
+            minimum = min(self.support, self.confidence, self.lift)
+            denom = maximum - minimum
+            if denom == 0:
+                denom = 0.01
+            self.fitness = 0.3*((self.support - minimum)/denom) + 0.3*((self.confidence - minimum)/denom) + 0.3*((self.lift - minimum)/denom)
+        if index == 15:
+            self.fitness = 0.3*(self.support) + 0.3*(self.confidence) + 0.3*(self.lift/1000)
+        if index == 16:
+            self.fitness = 0.1*(self.support) + 0.8*(self.confidence) + 0.1*(self.lift/10000)
+
 
         self.run_sequence_penalty()
         self.run_range_penalty()

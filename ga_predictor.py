@@ -7,6 +7,7 @@ import os
 import numpy as np 
 
 from sklearn import metrics 
+import matplotlib.pyplot as plt 
 
 #Help from here: https://analyticsindiamag.com/evaluation-metrics-in-ml-ai-for-classification-problems-wpython-code/
 
@@ -153,11 +154,11 @@ def get_empty_eval_dict():
     return eval_dict.copy()
 
 
-
 #Evaluate the prediction model 
-def evaluate_prediction_model(predict_df, key, model_index=0, first_valid_index=False):
-    #Change here - Sanity Checks 
-    #predict_df.to_csv("Testing.csv")
+def evaluate_prediction_model(predict_df, key, model_index=0, first_valid_index=False, save_predictions=False, graph_predictions=False, filepath_start=False):
+    #Change here - Sanity Checks
+    if save_predictions: 
+        predict_df.to_csv(f"{filepath_start}{model_index}_predictions.csv")
     eval_dict = {}
     eval_dict["Rule Index"] = model_index
     #print(first_valid_index)
@@ -168,6 +169,17 @@ def evaluate_prediction_model(predict_df, key, model_index=0, first_valid_index=
 
     pred = eval_df["predictions"].values.tolist()
     true = eval_df[key].values.tolist()
+
+    if graph_predictions:
+        title_name = f"Rule Index {model_index} True vs Predicted"
+        plt.rcParams["figure.figsize"] = [12.0, 8.0]
+        plt.rcParams["figure.autolayout"] = True
+        plt.plot(list(range(0, len(true))), true, 'o', label="true")
+        plt.plot(list(range(0, len(pred))), pred, 'o', label="predictions")
+        plt.title(title_name)
+        plt.legend()
+        plt.savefig(f"{filepath_start}{title_name}.png")
+        plt.clf()
    
     eval_dict["Accuracy"] = metrics.accuracy_score(true, pred)
     confusion_matrix = metrics.confusion_matrix(true, pred)
@@ -182,10 +194,42 @@ def evaluate_prediction_model(predict_df, key, model_index=0, first_valid_index=
     eval_dict["Precision"] = metrics.precision_score(true, pred, pos_label=1)
     eval_dict["Recall"] = metrics.recall_score(true, pred, pos_label=1)
     eval_dict["F1 Score"] = metrics.f1_score(true, pred, pos_label=1)
-    ##Another sanity check
-    #print("Eval Dict")
-    #print(eval_dict)
     return eval_dict
+
+
+
+# #Evaluate the prediction model 
+# def evaluate_prediction_model(predict_df, key, model_index=0, first_valid_index=False):
+#     #Change here - Sanity Checks 
+#     #predict_df.to_csv("Testing.csv")
+#     eval_dict = {}
+#     eval_dict["Rule Index"] = model_index
+#     #print(first_valid_index)
+#     if first_valid_index:
+#         eval_df = predict_df.iloc[first_valid_index:]
+#     else:
+#         eval_df = predict_df
+
+#     pred = eval_df["predictions"].values.tolist()
+#     true = eval_df[key].values.tolist()
+   
+#     eval_dict["Accuracy"] = metrics.accuracy_score(true, pred)
+#     confusion_matrix = metrics.confusion_matrix(true, pred)
+#     values_array = confusion_matrix.ravel()
+#     if len(values_array) > 1:
+#         eval_dict["True_Negatives"] = values_array[0]
+#         eval_dict["False_Positives"] = values_array[1] 
+#         eval_dict["False_Negatives"] = values_array[2]
+#         eval_dict["True_Positives"] = values_array[3]
+#     else:
+#         print(values_array)
+#     eval_dict["Precision"] = metrics.precision_score(true, pred, pos_label=1)
+#     eval_dict["Recall"] = metrics.recall_score(true, pred, pos_label=1)
+#     eval_dict["F1 Score"] = metrics.f1_score(true, pred, pos_label=1)
+#     ##Another sanity check
+#     #print("Eval Dict")
+#     #print(eval_dict)
+#     return eval_dict
 
 #This is a bit screwed up for average predictions 
 def ensemble_learn(list_of_rules, test_df, sequence=False):
@@ -239,7 +283,7 @@ def get_unique_fitness_rules(list_of_rules):
 
 
 
-def get_eval_dict(rules, kind, model_index, key, df, unique=False, sequence=False):
+def get_eval_dict(rules, kind, model_index, key, df, unique=False, sequence=False, filepath_start=None, graph_predictions=False, save_predictions=False):
     if "uniq" in str(model_index) or unique == True:
         use_rules = get_unique_fitness_rules(rules)
     else:
@@ -256,7 +300,9 @@ def get_eval_dict(rules, kind, model_index, key, df, unique=False, sequence=Fals
             predict_df, first_valid_index = ensemble_learn_or(use_rules, df, sequence=sequence)
         else:
             predict_df, first_valid_index = ensemble_learn(use_rules, df, sequence=sequence)
-    eval_dict = evaluate_prediction_model(predict_df, key, model_index=model_index, first_valid_index=first_valid_index)
+    eval_dict = evaluate_prediction_model(predict_df, key, model_index=model_index, first_valid_index=first_valid_index, 
+                                            save_predictions=save_predictions, graph_predictions=graph_predictions, 
+                                            filepath_start=filepath_start)
     return eval_dict
 
 
@@ -314,8 +360,35 @@ def complete_eval_top_rules(filepath_start, key, df, sequence=False):
     save_name = f"{filepath_start}rule_predictor_evaluation.csv"
     eval_df.to_csv(save_name)
 
-#print(eval_dict)
-#complete_eval_top_rules("generated_files/None/", "frost")
 
 
 
+def rule_list_full_eval(experiment_name, rules_list, key, df, sequence=False):
+    ensemble_indexes = ["ensemble_avg", "ensemble_uniq_avg", "ensemble_or", "ensemble_uniq_or"]
+    model_indexes = [*range(0, len(rules_list))]
+    both_indexes = model_indexes + ensemble_indexes
+    filepath_start =  f"data/output_data/{experiment_name}/"
+    if not os.path.exists(filepath_start):
+        os.makedirs(filepath_start)
+    eval_dict_list = []
+    for single_index in both_indexes:
+        if "ensemble" in str(single_index):
+            kind = "ensemble"
+        else:
+            kind = "rule"
+        #If it's a list of dataframes
+        if isinstance(df, list):
+            sub_eval_dict_list = []
+            for sub_df in df:
+                sub_eval_dict = get_eval_dict(rules_list, kind, single_index, key, sub_df, sequence=sequence)
+                sub_eval_dict_list.append(sub_eval_dict)
+            eval_dict = get_combo_eval_dict(sub_eval_dict_list)
+        #If it's a single dataframe 
+        else:
+            eval_dict = get_eval_dict(rules_list, kind, single_index, key, df, sequence=sequence, filepath_start=filepath_start, save_predictions=True, graph_predictions=True)
+        eval_dict_list.append(eval_dict)
+        #Change here 
+
+    eval_df = pd.DataFrame(eval_dict_list)
+    save_name = f"{filepath_start}rule_predictor_evaluation.csv"
+    eval_df.to_csv(save_name)

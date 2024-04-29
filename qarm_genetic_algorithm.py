@@ -25,4 +25,8 @@ def run_just_predictor(experiment_name, parameter_dict, consequent_dict, feature
         print(f"Finished predicting {experiment_name}")
 
 
+def run_rule_predictor(experiment_name, rules_list, key, df, sequence):
+        ga_predictor.rule_list_full_eval(experiment_name, rules_list, key, df, sequence=sequence)
+
+
 

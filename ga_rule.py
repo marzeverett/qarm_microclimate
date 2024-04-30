@@ -419,6 +419,11 @@ class rule:
             self.fitness = 0.3*(self.support) + 0.3*(self.confidence) + 0.3*(self.lift/1000)
         if index == 16:
             self.fitness = 0.1*(self.support) + 0.8*(self.confidence) + 0.1*(self.lift/10000)
+        if index == 17:
+            self.fitness = (self.support+(self.num_whole_rule/self.num_consequent)+ 8*self.confidence*0.1*self.lift)
+        if index == 18:
+            self.fitness = (self.support+2*(self.num_whole_rule/self.num_consequent)+ 10*self.confidence*0.1*self.lift)
+        
 
 
         self.run_sequence_penalty()

@@ -13,11 +13,18 @@ def load_rules(filename):
     #print(json.dumps(rules_list, indent=4))
 
 
-run_name = "run_45"
-indexes = [19, 29]
 
-filename = f"data/output_data/{run_name}/top_rules.json"
-rules_list = load_rules(filename)
+def get_rule(run_name, indexes):
+    filename = f"data/output_data/{run_name}/top_rules.json"
+    rules_list = load_rules(filename)
 
-for index in indexes:
-    print(json.dumps(rules_list[index], indent=4))
+    for index in indexes:
+        print(json.dumps(rules_list[index], indent=4))
+
+run_name = "run_56"
+indexes = [7,9,12,19]
+
+
+get_rule(run_name, indexes)
+
+

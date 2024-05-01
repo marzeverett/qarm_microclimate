@@ -1,5 +1,5 @@
 experiments = {
-"just_testing_exp_7": {
+"just_testing_exp_9": {
         "mutation_rate": 50,
         "mutation_amount": 100,
         "range_restriction": False,
@@ -12,7 +12,7 @@ experiments = {
         "max_mutation_tries": 5,
         "population_size": 150, 
         "top_rules": 20,
-        "generations": 20,
+        "generations": 50,
         "tournament_size": 4,
         "dominance": True,
         "sequence": True,
@@ -22,7 +22,7 @@ experiments = {
         "diversify_top_rules": True,
         "reseed_from_best": False,
         "sequence_antecedent_heuristic": False,
-        "fitness_function_index": 18,
+        "fitness_function_index": 17,
         "sequence_penalty_index": -1,
         "range_penalty_index": -1
     },

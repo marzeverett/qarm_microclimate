@@ -380,7 +380,7 @@ def rule_list_full_eval(experiment_name, rules_list, key, df, sequence=False):
         if isinstance(df, list):
             sub_eval_dict_list = []
             for sub_df in df:
-                sub_eval_dict = get_eval_dict(rules_list, kind, single_index, key, sub_df, sequence=sequence)
+                sub_eval_dict = get_eval_dict(rules_list, kind, single_index, key, sub_df, sequence=sequence, filepath_start=filepath_start, save_predictions=True, graph_predictions=True)
                 sub_eval_dict_list.append(sub_eval_dict)
             eval_dict = get_combo_eval_dict(sub_eval_dict_list)
         #If it's a single dataframe 

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-folder_name = "sample_7"
-index = 8
+folder_name = "sample_12"
+index = 1
 #index = "ensemble_or"
 
 key="delta_frost_events"

@@ -47,7 +47,7 @@ def run_rule_predictor(experiment_name, rules_list, key):
 #Think you need the consequent dict. (Name and sequence or not. You also need the test df. )
 key = "delta_frost_events"
 #rule_list_name = "high_recall_rules"
-rule_list_name = "sample_8"
+rule_list_name = "sample_12"
 rules_list_module = importlib.import_module(f"rules.{rule_list_name}", package=None)
 rules_list = rules_list_module.rules
 #Run all the experiments in the file through prediction

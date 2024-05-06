@@ -21,8 +21,8 @@ def get_rule(run_name, indexes):
     for index in indexes:
         print(json.dumps(rules_list[index], indent=4))
 
-run_name = "run_56"
-indexes = [7,9,12,19]
+run_name = "low_recall_rules"
+indexes = [5]
 
 
 get_rule(run_name, indexes)

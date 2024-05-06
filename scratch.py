@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-folder_name = "sample_12"
-index = 1
-#index = "ensemble_or"
+folder_name = "sample_10"
+#index = 17
+index = "ensemble_or"
 
 key="delta_frost_events"
 file_name = f"data/output_data/{folder_name}/{index}_predictions.csv"
